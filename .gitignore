@@ -1,31 +1,33 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# Python specific
-*.pyc
+# Python virtual environments & cache
 __pycache__/
+*.py[cod]
+*$py.class
 venv/
 env/
+.venv/
+.env/
+
+# Node.js dependencies & production builds
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+/frontend/build/
+/frontend/dist/
+
+# Environment and sensitive secrets (CRITICAL)
 .env
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+*.env
+*.pem
+*.key
 
-# logs and debug files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# IDEs and System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

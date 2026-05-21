@@ -1,18 +1,31 @@
-FROM python:3.12-slim
+# Use an official lightweight Python image
+FROM python:3.11-slim
 
+# Set working directory
 WORKDIR /app
 
-# Copy requirements first for better caching
+# Prevent Python from writing .pyc files and enable unbuffered logging
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Install system dependencies (e.g., curl for healthchecks)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first to leverage Docker cache layers
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application files (NOT .env)
+# Copy the rest of the application
 COPY . .
 
-# Copy .env file at runtime via volume mount, not COPY
+# Run as a non-privileged user for security
+RUN useradd -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
 
-# Expose port for backend
+# Expose backend port
 EXPOSE 5000
 
-# Run the Flask application
+# Start application (adjust 'app:app' to match your WSGI/ASGI file and variable name)
 CMD ["python", "app.py"]

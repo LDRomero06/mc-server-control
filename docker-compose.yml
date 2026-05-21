@@ -5,16 +5,11 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
     environment:
-      - PORTAINER_API_URL=${PORTAINER_API_URL:-http://your-portainer-url:9000/api/endpoints/1}
-      - PORTAINER_API_KEY=${PORTAINER_API_KEY:-your_secret_api_key}
-      - ALLOWED_CONTAINER_NAMES=${ALLOWED_CONTAINER_NAMES:-skyblock,survival,creative}
-    volumes:
-      - ./backend:/app
-    env_file:
-      - ./backend/.env
+      - PORTAINER_API_URL=${PORTAINER_API_URL}
+      - PORTAINER_API_TOKEN=${PORTAINER_API_TOKEN}
+    expose:
+      - "5000"
     restart: unless-stopped
 
   frontend:
@@ -22,20 +17,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
+      - "80:80"
     depends_on:
       - backend
-    restart: unless-stopped
-
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./frontend/build:/usr/share/nginx/html:ro
-    depends_on:
-      - frontend
     restart: unless-stopped
