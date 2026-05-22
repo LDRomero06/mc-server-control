@@ -21,8 +21,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Run as a non-privileged user for security
-RUN useradd -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-USER appuser
+#RUN useradd -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+#USER appuser
 
 # Expose backend port
 EXPOSE 5000
