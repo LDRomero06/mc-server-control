@@ -8,6 +8,9 @@ export default defineConfig({
     proxy: {
       '/api': 'http://backend:5000',
       '/health': 'http://backend:5000',
-    }
+    },
+    allowedHosts: [
+      'maxcontroller.adsnmro.com'
+    ],
   }
 })
