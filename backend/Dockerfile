@@ -1,6 +1,9 @@
 # Use an official lightweight Python image
 FROM python:3.11-slim
 
+# Install uv from the official image
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 # Set working directory
 WORKDIR /app
 
@@ -13,9 +16,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first to leverage Docker cache layers
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy dependency definition and lockfiles first to leverage Docker cache layers
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies using uv into the system python env
+RUN uv pip install --system --no-cache -r pyproject.toml
 
 # Copy the rest of the application
 COPY . .

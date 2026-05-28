@@ -1,5 +1,0 @@
-uvicorn
-import fastapi
-requests
-python-dotenv
-pydantic
