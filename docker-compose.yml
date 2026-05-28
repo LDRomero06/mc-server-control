@@ -17,7 +17,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3007:3000"  # Map host port 8000 to container port 80
+      - "3007:3000"  # Map host port 3007 to container port 3000
     networks:
       - mc-server-net
     restart: unless-stopped
